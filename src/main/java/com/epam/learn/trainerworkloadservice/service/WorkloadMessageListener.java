@@ -18,7 +18,7 @@ public class WorkloadMessageListener {
     public void onMessage(TrainerWorkloadRequest workloadRequest) {
         try {
             validateMessage(workloadRequest);
-            trainerWorkloadService.updateWorkload(workloadRequest);
+            trainerWorkloadService.processEvent(workloadRequest);
         } catch (InvalidMessageException e) {
             // Log the invalid message and route to DLQ
             System.err.println("Invalid message detected: " + workloadRequest);
@@ -40,7 +40,7 @@ public class WorkloadMessageListener {
         if (request.getTrainingDuration() == null || request.getTrainingDuration() <= 0) {
             throw new InvalidMessageException("Invalid training duration");
         }
-        // Add more validation as needed
+        // Add more validation if needed
     }
 
     private void sendToDeadLetterQueue(TrainerWorkloadRequest workloadRequest, String reason) {
@@ -54,4 +54,5 @@ public class WorkloadMessageListener {
             System.err.println("Failed to send message to DLQ: " + e.getMessage());
         }
     }
+
 }
