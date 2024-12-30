@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TrainerWorkloadRequest {
     @NotBlank
     private String trainerUsername;
@@ -21,6 +22,5 @@ public class TrainerWorkloadRequest {
     private LocalDate trainingDate;
     @NotNull
     private Integer trainingDuration;
-    @NotBlank
-    private String actionType; // ADD or DELETE
+
 }

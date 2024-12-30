@@ -2,24 +2,24 @@ package com.epam.learn.trainerworkloadservice.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.*;
 
-@Entity
-@Getter
-@Setter
+@Document(collection = "trainers")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@CompoundIndex(name = "firstName_lastName_idx", def = "{'firstName': 1, 'lastName': 1}")
 public class Trainer {
     @Id
+    private ObjectId _id;
     private String username;
-    @Column(nullable = false)
     private String firstName;
-    @Column(nullable = false)
     private String lastName;
-    @Column(nullable = false)
     private boolean isActive;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "trainer", orphanRemoval = true)
     private List<TrainingYear> years = new ArrayList<>();
 }
