@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class WorkloadMessageListener {
     private final TrainerWorkloadService trainerWorkloadService;
     private final JmsTemplate jmsTemplate;
+    private TrainerWorkloadRequest lastTrainerWorkloadRequest;
 
     @JmsListener(destination = ActiveMQConfig.WORKLOAD_QUEUE)
     public void onMessage(TrainerWorkloadRequest workloadRequest) {
@@ -53,6 +54,15 @@ public class WorkloadMessageListener {
         } catch (Exception e) {
             System.err.println("Failed to send message to DLQ: " + e.getMessage());
         }
+    }
+
+    @JmsListener(destination = ActiveMQConfig.WORKLOAD_QUEUE)
+    public void receiveMessage(TrainerWorkloadRequest workloadRequest) {
+        this.lastTrainerWorkloadRequest = workloadRequest; // Capture the message for testing
+    }
+
+    public TrainerWorkloadRequest getLastMessage() {
+        return lastTrainerWorkloadRequest;
     }
 
 }
